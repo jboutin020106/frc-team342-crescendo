@@ -36,6 +36,7 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveModuleState[] states;
 
   private boolean fieldOriented;
+  private boolean driveWithTargeting;
 
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
@@ -172,6 +173,16 @@ public class SwerveDrive extends SubsystemBase {
 
   public boolean getFieldOriented() {
     return fieldOriented;
+  }
+
+  public Command toggleDriveWithTargeting(){
+    return run(() ->{
+      driveWithTargeting = !driveWithTargeting;
+    });
+  }
+
+  public boolean getDriveWithTargeting() {
+    return driveWithTargeting;
   }
 
   @Override

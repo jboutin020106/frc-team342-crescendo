@@ -29,16 +29,18 @@ public class RobotContainer {
   private XboxController joy;
   private DriveWithJoystick driveWithJoystick;
   private JoystickButton toggleFieldOrientedBtn;
+  private JoystickButton toggleDriveWithTargetingBtn;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
     swerve = new SwerveDrive();
     joy = new XboxController(0);
-    driveWithJoystick = new DriveWithJoystick(swerve, joy, swerve.getFieldOriented());
+    driveWithJoystick = new DriveWithJoystick(swerve, joy, swerve.getFieldOriented(), swerve.getDriveWithTargeting());
     
     swerve.setDefaultCommand(driveWithJoystick);
     toggleFieldOrientedBtn = new JoystickButton(joy, XboxController.Button.kA.value);
+    toggleDriveWithTargetingBtn = new JoystickButton(joy, XboxController.Button.kB.value);
 
     SmartDashboard.putData(swerve);
 
@@ -56,7 +58,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    toggleFieldOrientedBtn.whileTrue(swerve.toggleFieldOriented());
+    toggleFieldOrientedBtn.onTrue(swerve.toggleFieldOriented());
+    toggleDriveWithTargetingBtn.onTrue(swerve.toggleDriveWithTargeting());
   }
 
   /**
