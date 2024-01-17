@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -28,6 +29,7 @@ public class DriveWithJoystick extends Command {
 
   private Supplier<Double> rotateSpeed;
   private boolean fieldOriented;
+  private boolean driveWithTargeting;
 
   private SlewRateLimiter xLimiter;
   private SlewRateLimiter yLimiter;
@@ -38,11 +40,12 @@ public class DriveWithJoystick extends Command {
   private SwerveDriveKinematics swerveKinematics;
 
   /** Creates a new DriveWithJoystick. */
-  public DriveWithJoystick(SwerveDrive swerve, XboxController joy, boolean fieldOriented) {
+  public DriveWithJoystick(SwerveDrive swerve, XboxController joy, boolean fieldOriented, boolean driveWithTargeting) {
 
     this.swerve = swerve;
     this.joy = joy;
     this.fieldOriented = fieldOriented;
+    this.driveWithTargeting = driveWithTargeting;
 
     xLimiter = new SlewRateLimiter(3);
     yLimiter = new SlewRateLimiter(3);
@@ -72,7 +75,11 @@ public class DriveWithJoystick extends Command {
     rotateSpeed = rotateLimiter.calculate(rotateSpeed) * DriveConstants.MAX_ROTATE_SPEED;
 
     if(fieldOriented) {
-      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, swerve.getGyro().getRotation2d());
+        if (driveWithTargeting){
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, new Rotation2d(swerve.getHeadingWithOffset()));
+          } else {
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, swerve.getGyro().getRotation2d());
+          }
     } else {
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rotateSpeed);
     }
