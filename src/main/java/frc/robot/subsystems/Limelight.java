@@ -15,7 +15,7 @@ public class Limelight extends SubsystemBase {
 
     public Limelight(String limelightName){
 
-        limelightName = this.limelightName;
+        this.limelightName = limelightName;
 
     }
 
