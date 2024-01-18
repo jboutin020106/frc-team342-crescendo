@@ -67,9 +67,18 @@ public final class Constants {
 
     // Offsets
     public static final double BACK_RIGHT_OFFSET = 1.097 + (Math.PI / 2);
+
   }
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+
+  public static class LimelightConstants{
+    public static final double LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double LIMELIGHT_HEIGHT_TO_AMP = 0;
+    public static final double LIMELIGHT_HEIGHT_TO_SOURCE = 0;
+    
+    public static final String LIMELIGHT_NAME = "Limelight";
   }
 }

@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Drive.DriveWithJoystick;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   private SwerveDrive swerve;
+  private Limelight limelight;
   
   private XboxController joy;
   private DriveWithJoystick driveWithJoystick;
@@ -35,6 +38,8 @@ public class RobotContainer {
   public RobotContainer() {
     
     swerve = new SwerveDrive();
+    limelight = new Limelight(LimelightConstants.LIMELIGHT_NAME);
+    
     joy = new XboxController(0);
     driveWithJoystick = new DriveWithJoystick(swerve, joy, swerve.getFieldOriented(), swerve.getDriveWithTargeting());
     
