@@ -68,6 +68,12 @@ public final class Constants {
     // Offsets
     public static final double BACK_RIGHT_OFFSET = 1.097 + (Math.PI / 2);
 
+    //Rotate PID Controller Constants
+    public static final double ROTATION_P = 8.0;
+    public static final double ROTATION_I = 0.0;
+    public static final double ROTATION_D = 3.0;
+    public static final double ROTATION_TOLERANCE = Math.toRadians(Math.toRadians(5));
+    
   }
 
   public static class OperatorConstants {
