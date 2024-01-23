@@ -88,9 +88,9 @@ public final class Constants {
     public static final double LIMELIGHT_HEIGHT_TO_SOURCE = 0;
 
     //Apriltag offset constants
-    public static final double APRILTAG_DRIVE_OFFSET = 5.4;
-    public static final double APRILTAG_STRAFE_OFFSET = -1;
-    public static final double APRILTAG_ROTATE_OFFSET = 17;
+    public static final double APRILTAG_DRIVE_OFFSET = 0;
+    public static final double APRILTAG_STRAFE_OFFSET = 0;
+    public static final double APRILTAG_ROTATE_OFFSET = 0;
     
     public static final String LIMELIGHT_NAME = "Limelight";
   }
@@ -111,5 +111,8 @@ public final class Constants {
     public static final double ROTATE_PID_P = 0.01;
     public static final double ROTATE_PID_I = 0;
     public static final double ROTATE_PID_D = 0;
+
+    //Autoalign deadband
+    public static final double AUTO_ALIGN_DEADBAND = 0.05;
   }
 }
