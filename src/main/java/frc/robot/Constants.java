@@ -92,7 +92,9 @@ public final class Constants {
     public static final double APRILTAG_STRAFE_OFFSET = 0;
     public static final double APRILTAG_ROTATE_OFFSET = 0;
     
-    public static final String LIMELIGHT_NAME = "Limelight";
+    //Limelight name constants
+    public static final String FRONT_LIMELIGHT_NAME = "Front Limelight";
+    public static final String BACK_LIMELIGHT_NAME = "Back Limelight";
   }
 
   public static class AutoAlignConstants{

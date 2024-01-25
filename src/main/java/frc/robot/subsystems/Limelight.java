@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
@@ -21,26 +22,24 @@ public class Limelight extends SubsystemBase {
 
     public double calculateHorizontalDistanceToSpeaker(){
 
-        double horizontalDistanceToSpeaker = LimelightConstants.LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(LimelightConstants.LIMELIGHT_NAME));
+        double horizontalDistanceToSpeaker = LimelightConstants.LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSpeaker;
 
     }
 
     public double calculateHorizontalDistanceToAmp(){
 
-        double horizontalDistanceToAmp = LimelightConstants.LIMELIGHT_HEIGHT_TO_AMP / Math.tan(LimelightHelpers.getTY(LimelightConstants.LIMELIGHT_NAME));
+        double horizontalDistanceToAmp = LimelightConstants.LIMELIGHT_HEIGHT_TO_AMP / Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToAmp;
 
     }
 
     public double calculateHorizontalDistanceToSource(){
 
-        double horizontalDistanceToSource = LimelightConstants.LIMELIGHT_HEIGHT_TO_SOURCE / Math.tan(LimelightHelpers.getTY(LimelightConstants.LIMELIGHT_NAME));
+        double horizontalDistanceToSource = LimelightConstants.LIMELIGHT_HEIGHT_TO_SOURCE / Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSource;
 
     }
-
-
 }
 
 

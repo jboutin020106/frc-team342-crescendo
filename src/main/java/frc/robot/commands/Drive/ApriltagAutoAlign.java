@@ -28,13 +28,16 @@ public class ApriltagAutoAlign extends Command {
   private final double driveOffset, strafeOffset, rotateOffset;
   private final NetworkTable limelightTable;
   private final double[] robotPose;
+  private final String limelightName;
 
 
   /** Creates a new ApriltagAutoAlign. */
-  public ApriltagAutoAlign(SwerveDrive swerve) {
+  public ApriltagAutoAlign(SwerveDrive swerve, String limelightName) {
     // Use addRequirements() here to declare subsystem dependencies.
 
-    this.limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    this.limelightName = limelightName;
+
+    this.limelightTable = NetworkTableInstance.getDefault().getTable(limelightName);
 
     this.swerve = swerve;
 
@@ -80,11 +83,11 @@ public class ApriltagAutoAlign extends Command {
 
       if(LimelightHelpers.getTV("Limelight")){
 
-        driveVelocity = drivePID.calculate(LimelightHelpers.getTA("Limelight"), driveOffset);
-        strafeVelocity = strafePID.calculate(LimelightHelpers.getTX("Limelight"), strafeOffset);
+        driveVelocity = drivePID.calculate(LimelightHelpers.getTA(limelightName), driveOffset);
+        strafeVelocity = strafePID.calculate(LimelightHelpers.getTX(limelightName), strafeOffset);
         rotateVelocity = rotatePID.calculate(-robotPose[5], rotateOffset);
 
-      } else if (LimelightHelpers.getTV("Limelight") == false) {
+      } else if (LimelightHelpers.getTV(limelightName) == false) {
 
         driveVelocity = 0;
         strafeVelocity = 0;

@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -38,6 +40,8 @@ public class SwerveDrive extends SubsystemBase {
 
   private boolean fieldOriented;
   private boolean driveWithTargeting;
+
+  private SwerveDrivePoseEstimator poseEstimator; 
 
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
@@ -94,6 +98,9 @@ public class SwerveDrive extends SubsystemBase {
       position = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getRotatePosition()));
       return position;
     }
+
+    poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.KINEMATICS, getRotation2d(), positions, new Pose2d());
+
     return null;
   }
 
@@ -197,7 +204,12 @@ public class SwerveDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //Odometry update
     swerveOdometry.update(getRotation2d(), positions);
+
+    //Pose estimator update
+    poseEstimator.update(getRotation2d(), positions);
+    
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
