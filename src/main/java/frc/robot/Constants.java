@@ -109,7 +109,17 @@ public final class Constants {
     public static final double MAXIMUM_DISTANCE_FROM_SPEAKER = 0;
     public static final double MINIMUM_ANGLE_OFFSET_FROM_SPEAKER = 0;
     public static final double MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER = 0;
-    
+
+    //Ready-to-Score in amp offset constants
+    public static final double MINIMUM_DISTANCE_FROM_AMP = 0;
+    public static final double MAXIMUM_DISTANCE_FROM_AMP = 0;
+    public static final double MINIMUM_ANGLE_OFFSET_FROM_AMP = 0;
+    public static final double MAXIMUM_ANGLE_OFFSET_FROM_AMP = 0;
+
+    //Apriltag IDs
+    public static final int SPEAKER_CENTER_APRILTAG_ID = 8;
+    public static final int AMP_APRILTAG_ID = 6;
+
     //Limelight name constants
     public static final String AMP_SIDE_LIMELIGHT_NAME = "Amp Side Limelight";
     public static final String SHOOTER_SIDE_LIMELIGHT_NAME = "Shooter Side Limelight";

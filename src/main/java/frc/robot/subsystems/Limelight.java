@@ -88,7 +88,7 @@ public class Limelight extends SubsystemBase {
         boolean readyToShoot = false;
 
         if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-            if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == 8){
+            if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == LimelightConstants.SPEAKER_CENTER_APRILTAG_ID){
                 if(LimelightConstants.MINIMUM_DISTANCE_FROM_SPEAKER <= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)
                     && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
                 if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
@@ -100,6 +100,25 @@ public class Limelight extends SubsystemBase {
         }
         return readyToShoot;
     }
-} 
+
+    public boolean canScoreInAmp(){
+
+        boolean canScoreInAmp = false;
+
+        if(LimelightHelpers.getTV(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+            if(LimelightHelpers.getFiducialID(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME) == LimelightConstants.AMP_APRILTAG_ID){
+                if(LimelightConstants.MINIMUM_DISTANCE_FROM_AMP <= calculateHorizontalDistanceToSpeaker(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)
+                    && LimelightConstants.MAXIMUM_DISTANCE_FROM_AMP >= calculateHorizontalDistanceToSpeaker(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+                if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_AMP <= LimelightHelpers.getTY(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME) 
+                    && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_AMP >= LimelightHelpers.getTY(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+                        canScoreInAmp = true;
+                   }
+                }
+            }
+        }
+        return canScoreInAmp;
+    }
+ }
+
 
 
