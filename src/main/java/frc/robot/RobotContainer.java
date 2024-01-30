@@ -27,7 +27,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   private SwerveDrive swerve;
-  private Limelight limelight;
+
+  private Limelight ampSideLimelight;
+  private Limelight shooterSideLimelight;
   
   private XboxController joy;
   private DriveWithJoystick driveWithJoystick;
@@ -38,7 +40,8 @@ public class RobotContainer {
   public RobotContainer() {
     
     swerve = new SwerveDrive();
-    limelight = new Limelight(LimelightConstants.LIMELIGHT_NAME);
+    ampSideLimelight = new Limelight(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME);
+    shooterSideLimelight = new Limelight(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME);
     
     joy = new XboxController(0);
     driveWithJoystick = new DriveWithJoystick(swerve, joy, swerve.getFieldOriented(), swerve.getDriveWithTargeting());

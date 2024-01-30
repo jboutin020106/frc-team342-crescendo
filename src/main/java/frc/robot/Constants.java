@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -82,19 +84,29 @@ public final class Constants {
 
   public static class LimelightConstants{
 
-    //Limelight height constants
-    public static final double LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
-    public static final double LIMELIGHT_HEIGHT_TO_AMP = 0;
-    public static final double LIMELIGHT_HEIGHT_TO_SOURCE = 0;
+    //Amp Side Limelight height constants
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP = 0;
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
 
-    //Apriltag offset constants
-    public static final double APRILTAG_DRIVE_OFFSET = 0;
-    public static final double APRILTAG_STRAFE_OFFSET = 0;
-    public static final double APRILTAG_ROTATE_OFFSET = 0;
+    //Shooter Side Limelight height constants
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP = 0;
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
+
+    //Amp Side Apriltag offset constants
+    public static final double AMP_SIDE_APRILTAG_DRIVE_OFFSET = 0;
+    public static final double AMP_SIDE_APRILTAG_STRAFE_OFFSET = 0;
+    public static final double AMP_SIDE_APRILTAG_ROTATE_OFFSET = 0;
+
+    //Shooter Side Apriltag offset constants
+    public static final double SHOOTER_SIDE_APRILTAG_DRIVE_OFFSET = 0;
+    public static final double SHOOTER_SIDE_APRILTAG_STRAFE_OFFSET = 0;
+    public static final double SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET = 0;
     
     //Limelight name constants
-    public static final String FRONT_LIMELIGHT_NAME = "Front Limelight";
-    public static final String BACK_LIMELIGHT_NAME = "Back Limelight";
+    public static final String AMP_SIDE_LIMELIGHT_NAME = "Amp Side Limelight";
+    public static final String SHOOTER_SIDE_LIMELIGHT_NAME = "Shooter Side Limelight";
   }
 
   public static class AutoAlignConstants{
@@ -116,5 +128,17 @@ public final class Constants {
 
     //Autoalign deadband
     public static final double AUTO_ALIGN_DEADBAND = 0.05;
+  }
+
+  public static class fieldConstants{
+
+    public static final double FIELD_WIDTH_IN_METERS = 16.54175;
+
+    public static final double FIELD_LENGTH_IN_METERS = 8.0137;
+
+    public static final Pose2d FLIPPING_POSE = new Pose2d(
+      new Translation2d(FIELD_LENGTH_IN_METERS, FIELD_WIDTH_IN_METERS),
+      new Rotation2d(Math.PI));
+
   }
 }

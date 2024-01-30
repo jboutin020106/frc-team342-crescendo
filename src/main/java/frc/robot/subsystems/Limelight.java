@@ -20,24 +20,69 @@ public class Limelight extends SubsystemBase {
 
     }
 
-    public double calculateHorizontalDistanceToSpeaker(){
+    public double calculateHorizontalDistanceToSpeaker(String limelightName){
 
-        double horizontalDistanceToSpeaker = LimelightConstants.LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
+        if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+        double horizontalDistanceToSpeaker = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSpeaker;
+        } 
+
+        else if (limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)) {
+        double horizontalDistanceToSpeaker = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / 
+        Math.tan(LimelightHelpers.getTY(limelightName));
+        return horizontalDistanceToSpeaker;
+        } 
+        
+        else {
+            double horizontalDistanceToSpeaker = 0;
+            return horizontalDistanceToSpeaker;
+        }
+
 
     }
 
     public double calculateHorizontalDistanceToAmp(){
 
-        double horizontalDistanceToAmp = LimelightConstants.LIMELIGHT_HEIGHT_TO_AMP / Math.tan(LimelightHelpers.getTY(limelightName));
-        return horizontalDistanceToAmp;
+        if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+            double horizontalDistanceToAmp = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP 
+            / Math.tan(LimelightHelpers.getTY(limelightName));
+            return horizontalDistanceToAmp;
+        }
+
+        else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+            double horizontalDistanceToAmp = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
+            / Math.tan(LimelightHelpers.getTY(limelightName));
+            return horizontalDistanceToAmp;
+        }
+
+        else{
+            double horizontalDistanceToAmp = 0;
+            return horizontalDistanceToAmp;
+        }
+
+
 
     }
 
     public double calculateHorizontalDistanceToSource(){
 
-        double horizontalDistanceToSource = LimelightConstants.LIMELIGHT_HEIGHT_TO_SOURCE / Math.tan(LimelightHelpers.getTY(limelightName));
-        return horizontalDistanceToSource;
+         if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+            double horizontalDistanceToSource = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE
+            / Math.tan(LimelightHelpers.getTY(limelightName));
+            return horizontalDistanceToSource;
+        }
+
+        else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+            double horizontalDistanceToSource = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
+            / Math.tan(LimelightHelpers.getTY(limelightName));
+            return horizontalDistanceToSource;
+        }
+
+        else{
+            double horizontalDistanceToSource = 0;
+            return horizontalDistanceToSource;
+        }
+
 
     }
 }

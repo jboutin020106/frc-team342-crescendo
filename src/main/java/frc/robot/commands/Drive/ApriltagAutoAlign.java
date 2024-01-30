@@ -29,7 +29,7 @@ public class ApriltagAutoAlign extends Command {
   private final NetworkTable limelightTable;
   private final double[] robotPose;
   private final String limelightName;
-
+  
 
   /** Creates a new ApriltagAutoAlign. */
   public ApriltagAutoAlign(SwerveDrive swerve, String limelightName) {
@@ -62,9 +62,27 @@ public class ApriltagAutoAlign extends Command {
       AutoAlignConstants.ROTATE_PID_I, 
       AutoAlignConstants.ROTATE_PID_D);
 
-      this.driveOffset = LimelightConstants.APRILTAG_DRIVE_OFFSET;
-      this.strafeOffset = LimelightConstants.APRILTAG_STRAFE_OFFSET;
-      this.rotateOffset = LimelightConstants.APRILTAG_ROTATE_OFFSET;
+      if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+
+        this.driveOffset = LimelightConstants.AMP_SIDE_APRILTAG_DRIVE_OFFSET;
+        this.strafeOffset = LimelightConstants.AMP_SIDE_APRILTAG_STRAFE_OFFSET;
+        this.rotateOffset = LimelightConstants.AMP_SIDE_APRILTAG_ROTATE_OFFSET;
+
+      } else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+
+        driveOffset = LimelightConstants.SHOOTER_SIDE_APRILTAG_DRIVE_OFFSET;
+        strafeOffset = LimelightConstants.SHOOTER_SIDE_APRILTAG_STRAFE_OFFSET;
+        rotateOffset = LimelightConstants.SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET;
+
+      } else {
+
+        driveOffset = 0;
+        strafeOffset = 0;
+        rotateOffset = 0;
+        
+      }
+
+    
 
       addRequirements(swerve);
 
