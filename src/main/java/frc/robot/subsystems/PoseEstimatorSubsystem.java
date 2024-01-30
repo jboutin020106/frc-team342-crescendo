@@ -15,6 +15,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
@@ -30,10 +31,6 @@ import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kRedAlli
 
 public class PoseEstimatorSubsystem extends SubsystemBase {
 
-  
-  private static final SwerveDrive swerve;
-
-  
   //Standard Deviation instantiations
   private static final Matrix stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
   private static final Matrix visionStdDevs = VecBuilder.fill(1.5, 1.5, 1.5);
@@ -47,23 +44,18 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   private final Field2d field2d = new Field2d();
 
   private OriginPosition originPosition = kBlueAllianceWallRightSide;
-  private boolean sawTag = false;
-  
-  swerve = new SwerveDrive();
-
+  private boolean sawTag;
 
   /** Creates a new PoseEstimatorSubsystem. */
-  public PoseEstimatorSubsystem(SwerveDrive swerve) {
+  public PoseEstimatorSubsystem(Supplier<Rotation2d> rotationSupplier, Supplier<SwerveModulePosition[]> modulePositionSupplier) {
 
           this.rotationSupplier = rotationSupplier;
           this.modulePositionSupplier = modulePositionSupplier;
 
-          this.swerve = swerve;
-
           poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.KINEMATICS,
-            swerve.getRotation2d(), 
-            swerve.getModulePositions(),
+            rotationSupplier.get(), 
+            modulePositionSupplier.get(),
             new Pose2d() 
             );
   }
@@ -115,7 +107,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   }
 
   public void setCurrentPose(Pose2d newPose){
-    //poseEstimator.resetPosition(rotationSupplier.get(), modulePositionSupplier.get(), newPose);
+    poseEstimator.resetPosition(rotationSupplier.get(), modulePositionSupplier.get(), newPose);
   }
 
   public void resetFieldPosition(){
