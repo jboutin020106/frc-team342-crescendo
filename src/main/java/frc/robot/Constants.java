@@ -103,6 +103,12 @@ public final class Constants {
     public static final double SHOOTER_SIDE_APRILTAG_DRIVE_OFFSET = 0;
     public static final double SHOOTER_SIDE_APRILTAG_STRAFE_OFFSET = 0;
     public static final double SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET = 0;
+
+    //Ready-to-Shoot offset constants
+    public static final double MINIMUM_DISTANCE_FROM_SPEAKER = 0;
+    public static final double MAXIMUM_DISTANCE_FROM_SPEAKER = 0;
+    public static final double MINIMUM_ANGLE_OFFSET_FROM_SPEAKER = 0;
+    public static final double MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER = 0;
     
     //Limelight name constants
     public static final String AMP_SIDE_LIMELIGHT_NAME = "Amp Side Limelight";

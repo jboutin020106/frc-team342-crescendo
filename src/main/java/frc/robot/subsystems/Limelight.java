@@ -41,7 +41,7 @@ public class Limelight extends SubsystemBase {
 
     }
 
-    public double calculateHorizontalDistanceToAmp(){
+    public double calculateHorizontalDistanceToAmp(String limelightName){
 
         if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
             double horizontalDistanceToAmp = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP 
@@ -64,7 +64,7 @@ public class Limelight extends SubsystemBase {
 
     }
 
-    public double calculateHorizontalDistanceToSource(){
+    public double calculateHorizontalDistanceToSource(String limelightName){
 
          if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
             double horizontalDistanceToSource = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE
@@ -82,9 +82,22 @@ public class Limelight extends SubsystemBase {
             double horizontalDistanceToSource = 0;
             return horizontalDistanceToSource;
         }
-
-
     }
-}
+
+    public boolean readyToShoot(){
+        boolean readyToShoot = false;
+
+        if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+             if(LimelightConstants.MINIMUM_DISTANCE_FROM_SPEAKER <= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)
+                && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+                if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
+                   && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER >= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+                        readyToShoot = true;
+                   }
+            }
+        }
+        return readyToShoot;
+    }
+} 
 
 
