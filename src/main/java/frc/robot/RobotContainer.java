@@ -10,6 +10,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.Drive.DriveWithJoystick;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDrive;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +32,13 @@ public class RobotContainer {
 
   private Limelight ampSideLimelight;
   private Limelight shooterSideLimelight;
-  
+
+  private NetworkTableInstance shooterSideLimelightInstance = NetworkTableInstance.create();
+  private NetworkTable shooterSideLimelightTable = shooterSideLimelightInstance.getTable("Shooter Side Limelight Table");
+
+  private NetworkTableInstance ampSideLimelightInstance = NetworkTableInstance.create();
+  private NetworkTable ampSideLimelightTable = ampSideLimelightInstance.getTable("Amp Side Limelight Table");
+
   private XboxController joy;
   private DriveWithJoystick driveWithJoystick;
   private JoystickButton toggleFieldOrientedBtn;

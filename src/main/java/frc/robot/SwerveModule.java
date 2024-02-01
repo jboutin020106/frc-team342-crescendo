@@ -116,6 +116,14 @@ public class SwerveModule extends SubsystemBase {
     rotateMotor.set(rotateController.calculate(getRotatePosition(), state.angle.getRadians()));
   }
 
+  public CANSparkMax getDriveMotor(){
+    return driveMotor;
+  }
+
+  public CANSparkMax getRotateMotor(){
+    return rotateMotor;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

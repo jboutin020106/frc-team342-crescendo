@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -23,6 +25,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.SwerveModule;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.subsystems.Testable.Connection;
 
 public class SwerveDrive extends SubsystemBase {
 
@@ -213,5 +216,30 @@ public class SwerveDrive extends SubsystemBase {
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
+  }
+
+  public List<Connection> hardwareConnections(){
+    return List.of(
+
+        //Front Left Module Connection Checks
+        Connection.sparkMaxConnectionCheck(frontLeft.getDriveMotor()),
+        Connection.sparkMaxConnectionCheck(frontLeft.getRotateMotor()),
+
+        //Front Right Module Connection Checks
+        Connection.sparkMaxConnectionCheck(frontRight.getDriveMotor()),
+        Connection.sparkMaxConnectionCheck(frontRight.getRotateMotor()),
+
+        //Back Left Module Connection Checks
+        Connection.sparkMaxConnectionCheck(backLeft.getDriveMotor()),
+        Connection.sparkMaxConnectionCheck(backLeft.getRotateMotor()),
+
+        //Back Right Module Connection Checks
+        Connection.sparkMaxConnectionCheck(backRight.getDriveMotor()),
+        Connection.sparkMaxConnectionCheck(backRight.getRotateMotor()),
+
+        //NAVX Connection Check
+        Connection.navXConnectionCheck(gyro)
+
+    );
   }
 }
