@@ -4,13 +4,20 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.subsystems.Testable.Connection;
 
 /** Add your docs here. */
-public class Limelight extends SubsystemBase {
+public class Limelight extends SubsystemBase{
+
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight table");
 
     private String limelightName;
 
@@ -91,9 +98,9 @@ public class Limelight extends SubsystemBase {
             if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == LimelightConstants.SPEAKER_CENTER_APRILTAG_ID){
                 if(LimelightConstants.MINIMUM_DISTANCE_FROM_SPEAKER <= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)
                     && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-                if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
-                    && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER >= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-                        readyToShoot = true;
+                         if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
+                              && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER >= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+                                    readyToShoot = true;
                    }
                 }
             }
@@ -117,6 +124,12 @@ public class Limelight extends SubsystemBase {
             }
         }
         return canScoreInAmp;
+    }
+
+    public List<Connection> hardwareConnections() {
+        return List.of(
+            Connection.limelightConnectionCheck(table, limelightName)
+        );
     }
  }
 

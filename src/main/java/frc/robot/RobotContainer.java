@@ -38,12 +38,6 @@ public class RobotContainer {
   private Limelight ampSideLimelight;
   private Limelight shooterSideLimelight;
 
-  private NetworkTableInstance shooterSideLimelightInstance = NetworkTableInstance.create();
-  private NetworkTable shooterSideLimelightTable = shooterSideLimelightInstance.getTable("Shooter Side Limelight Table");
-
-  private NetworkTableInstance ampSideLimelightInstance = NetworkTableInstance.create();
-  private NetworkTable ampSideLimelightTable = ampSideLimelightInstance.getTable("Amp Side Limelight Table");
-
   private XboxController joy;
   private DriveWithJoystick driveWithJoystick;
   private JoystickButton toggleFieldOrientedBtn;
@@ -103,7 +97,14 @@ public class RobotContainer {
           () -> {hardware.getEntry("Drive System").setString(swerve.hardwareConnections()); },
           swerve
       ),
-    
-    );
+
+      new InstantCommand(
+        () -> {hardware.getEntry("Amp Side Limelight").setString(ampSideLimelight.hardwareConnections()); },
+        ampSideLimelight )
+      );
+
+      new InstantCommand(
+        () -> {hardware.getEntry("Shooter Side Limelight").setString(shooterSideLimelight.hardwareConnections()); }, 
+        shooterSideLimelight );
   }
 }
