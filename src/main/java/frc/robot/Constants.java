@@ -72,4 +72,31 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class LimelightConstants{
+
+    //Amp Side Limelight height constants
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP = 0;
+    public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
+
+    //Shooter Side Limelight height constants
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP = 0;
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
+
+    //Amp Side Apriltag offset constants
+    public static final double AMP_SIDE_APRILTAG_DRIVE_OFFSET = 0;
+    public static final double AMP_SIDE_APRILTAG_STRAFE_OFFSET = 0;
+    public static final double AMP_SIDE_APRILTAG_ROTATE_OFFSET = 0;
+
+    //Shooter Side Apriltag offset constants
+    public static final double SHOOTER_SIDE_APRILTAG_DRIVE_OFFSET = 0;
+    public static final double SHOOTER_SIDE_APRILTAG_STRAFE_OFFSET = 0;
+    public static final double SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET = 0;
+    
+    //Limelight name constants
+    public static final String AMP_SIDE_LIMELIGHT_NAME = "Amp Side Limelight";
+    public static final String SHOOTER_SIDE_LIMELIGHT_NAME = "Shooter Side Limelight";
+  }
 }
