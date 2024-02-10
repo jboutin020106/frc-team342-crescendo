@@ -9,6 +9,8 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
@@ -91,8 +93,8 @@ public class Limelight extends SubsystemBase{
         }
     }
 
-    public boolean readyToShoot(){
-        boolean readyToShoot = false;
+    public boolean readyToScoreInSpeaker(){
+        boolean readyToScoreInSpeaker = false;
 
         if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
             if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == LimelightConstants.SPEAKER_CENTER_APRILTAG_ID){
@@ -100,12 +102,12 @@ public class Limelight extends SubsystemBase{
                     && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
                          if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
                               && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER >= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-                                    readyToShoot = true;
+                                    readyToScoreInSpeaker = true;
                    }
                 }
             }
         }
-        return readyToShoot;
+            return readyToScoreInSpeaker;
     }
 
     public boolean canScoreInAmp(){
@@ -130,6 +132,17 @@ public class Limelight extends SubsystemBase{
         return List.of(
             Connection.limelightConnectionCheck(table, limelightName)
         );
+    }
+
+    @Override
+    public void initSendable(SendableBuilder sendableBuilder){
+        sendableBuilder.setSmartDashboardType(limelightName + " Values");
+
+        sendableBuilder.addDoubleProperty(limelightName + " X-Offset", () -> LimelightHelpers.getTX(limelightName), null);
+        sendableBuilder.addDoubleProperty(limelightName + " Y-Offset", () -> LimelightHelpers.getTY(limelightName), null);
+        sendableBuilder.addBooleanProperty(limelightName + " Has Target", () -> LimelightHelpers.getTV(limelightName), null);
+        sendableBuilder.addBooleanProperty("Can score in speaker?", () -> readyToScoreInSpeaker(), null);
+        sendableBuilder.addBooleanProperty("Can score in amp?", () -> canScoreInAmp(), null);
     }
  }
 
