@@ -77,7 +77,7 @@ public class DriveWithJoystick extends Command {
     rotateSpeed = rotateLimiter.calculate(rotateSpeed) * DriveConstants.MAX_ROTATE_SPEED;
 
     if(fieldOriented) {
-      if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) || LimelightHelpers.getTV(LimelightConstants.AMP_SIDE_LIMELIGHT_NAMEgt)){
+      if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) || LimelightHelpers.getTV(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
         if (driveWithTargeting){
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, new Rotation2d(swerve.getHeadingWithOffset()));
         }
