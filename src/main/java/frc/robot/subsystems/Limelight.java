@@ -14,6 +14,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.LimelightHelpers.LimelightTarget_Retro;
 import frc.robot.subsystems.Testable.Connection;
 
 /** Add your docs here. */
@@ -30,51 +31,43 @@ public class Limelight extends SubsystemBase{
     }
 
     public double calculateHorizontalDistanceToSpeaker(String limelightName){
-
-        if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
-        double horizontalDistanceToSpeaker = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
-        return horizontalDistanceToSpeaker;
-        } 
+        if(LimelightHelpers.getTV(limelightName) == true){
+            if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+                double horizontalDistanceToSpeaker = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
+                return horizontalDistanceToSpeaker;
+             } 
 
         else if (limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)) {
         double horizontalDistanceToSpeaker = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / 
         Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSpeaker;
-        } 
-        
-        else {
-            double horizontalDistanceToSpeaker = 0;
-            return horizontalDistanceToSpeaker;
+            } 
+        }
+            return 0.0;
         }
 
 
-    }
 
     public double calculateHorizontalDistanceToAmp(String limelightName){
 
-        if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
-            double horizontalDistanceToAmp = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP 
-            / Math.tan(LimelightHelpers.getTY(limelightName));
-            return horizontalDistanceToAmp;
-        }
+        if(LimelightHelpers.getTV(limelightName) == true){
+                if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+                    double horizontalDistanceToAmp = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP 
+                    / Math.tan(LimelightHelpers.getTY(limelightName));
+                    return horizontalDistanceToAmp;
+                 }
 
-        else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-            double horizontalDistanceToAmp = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
-            / Math.tan(LimelightHelpers.getTY(limelightName));
-            return horizontalDistanceToAmp;
-        }
-
-        else{
-            double horizontalDistanceToAmp = 0;
-            return horizontalDistanceToAmp;
-        }
-
-
-
-    }
+                else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+                    double horizontalDistanceToAmp = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
+                    / Math.tan(LimelightHelpers.getTY(limelightName));
+                    return horizontalDistanceToAmp;
+                }                
+             }
+    return 0.0;
+}
 
     public double calculateHorizontalDistanceToSource(String limelightName){
-
+        if(LimelightHelpers.getTV(limelightName)){
          if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
             double horizontalDistanceToSource = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE
             / Math.tan(LimelightHelpers.getTY(limelightName));
@@ -86,11 +79,8 @@ public class Limelight extends SubsystemBase{
             / Math.tan(LimelightHelpers.getTY(limelightName));
             return horizontalDistanceToSource;
         }
-
-        else{
-            double horizontalDistanceToSource = 0;
-            return horizontalDistanceToSource;
-        }
+      }
+        return 0.0;
     }
 
     public boolean readyToScoreInSpeaker(){
@@ -137,9 +127,11 @@ public class Limelight extends SubsystemBase{
     @Override
     public void initSendable(SendableBuilder sendableBuilder){
         sendableBuilder.setSmartDashboardType(limelightName + " Values");
-
         sendableBuilder.addDoubleProperty(limelightName + " X-Offset", () -> LimelightHelpers.getTX(limelightName), null);
         sendableBuilder.addDoubleProperty(limelightName + " Y-Offset", () -> LimelightHelpers.getTY(limelightName), null);
+        sendableBuilder.addDoubleProperty(limelightName + " Horizontal Distance to Speaker", () -> calculateHorizontalDistanceToSpeaker(limelightName), null);
+        sendableBuilder.addDoubleProperty(limelightName + " Horizontal Distance to Amp", () -> calculateHorizontalDistanceToAmp(limelightName), null);
+        sendableBuilder.addDoubleProperty(limelightName + " Horizontal Distance to Source", () -> calculateHorizontalDistanceToSource(limelightName), null);
         sendableBuilder.addBooleanProperty(limelightName + " Has Target", () -> LimelightHelpers.getTV(limelightName), null);
         sendableBuilder.addBooleanProperty("Can score in speaker?", () -> readyToScoreInSpeaker(), null);
         sendableBuilder.addBooleanProperty("Can score in amp?", () -> canScoreInAmp(), null);
