@@ -6,10 +6,19 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+//import frc.robot.commands.Drive.DriveDistance;
 import frc.robot.commands.Drive.DriveWithJoystick;
+//import frc.robot.commands.Outtake.OuttakeNote;
+//import frc.robot.subsystems.Outtake;
 import frc.robot.subsystems.SwerveDrive;
+
+//import com.pathplanner.lib.auto.AutoBuilder;
+//import com.pathplanner.lib.commands.PathPlannerAuto;
+
+// import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,23 +34,39 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   private SwerveDrive swerve;
+  // private Outtake outtake;
   
   private XboxController joy;
+
   private DriveWithJoystick driveWithJoystick;
+ //private DriveDistance driveDistance;
+  //private OuttakeNote outtakeNote;
+
   private JoystickButton toggleFieldOrientedBtn;
-  private JoystickButton toggleDriveWithTargetingBtn;
+  private JoystickButton toggleSlowModeBtn;
+  private JoystickButton outtakeNoteBtn;
+  private JoystickButton driveDistanceButton;
+
+  private SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
     swerve = new SwerveDrive();
+    System.out.println("Creating outtake...");
+    // outtake = new Outtake();
+
     joy = new XboxController(0);
-    driveWithJoystick = new DriveWithJoystick(swerve, joy, swerve.getFieldOriented(), swerve.getDriveWithTargeting());
-    
+    driveWithJoystick = new DriveWithJoystick(swerve, joy, false);
+
     swerve.setDefaultCommand(driveWithJoystick);
     toggleFieldOrientedBtn = new JoystickButton(joy, XboxController.Button.kA.value);
-    toggleDriveWithTargetingBtn = new JoystickButton(joy, XboxController.Button.kB.value);
+    toggleSlowModeBtn = new JoystickButton(joy, XboxController.Button.kX.value);
+    driveDistanceButton = new JoystickButton(joy, XboxController.Button.kY.value);
 
+
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putData(swerve);
 
     // Configure the trigger bindings
@@ -58,8 +83,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    toggleFieldOrientedBtn.onTrue(swerve.toggleFieldOriented());
-    toggleDriveWithTargetingBtn.onTrue(swerve.toggleDriveWithTargeting());
+    toggleFieldOrientedBtn.whileTrue(swerve.toggleFieldOriented());
   }
 
   /**
@@ -69,6 +93,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
-}  
+}
