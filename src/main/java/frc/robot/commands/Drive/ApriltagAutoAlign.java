@@ -136,7 +136,7 @@ public class ApriltagAutoAlign extends Command {
 
       SwerveModuleState[] moduleStates = DriveConstants.KINEMATICS.toSwerveModuleStates(autoAlignSpeeds);
 
-      swerve.setModuleStates(moduleStates);
+      swerve.setModuleStates(moduleStates, AutoAlignConstants.MAX_AUTO_ALIGN_DRIVE_SPEED);
   }
 
   // Called once the command ends or is interrupted.

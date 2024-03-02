@@ -181,6 +181,9 @@ public static class IntakeConstants {
 
     //Autoalign deadband
     public static final double AUTO_ALIGN_DEADBAND = 0.05;
+
+    //Max Auto-Align Drive Speed
+    public static final double MAX_AUTO_ALIGN_DRIVE_SPEED = Units.feetToMeters(10); // M/S
   }
 
   public static class fieldConstants{

@@ -84,7 +84,6 @@ public class Outtake extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Actual Velocity", encoder.getVelocity());
     SmartDashboard.putNumber("Desired Velocity", velocity);
-
     double p = SmartDashboard.getNumber("setP", 1);
     double i = SmartDashboard.getNumber("setI", 1);
     double d = SmartDashboard.getNumber("setD", 1);

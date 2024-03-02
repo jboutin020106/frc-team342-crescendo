@@ -86,9 +86,11 @@ public class RobotContainer {
 
     intake = new Intake();
     outtake = new Outtake();
-    swerve = new SwerveDrive();
+    
     ampSideLimelight = new Limelight(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME);
     shooterSideLimelight = new Limelight(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME);
+
+    swerve = new SwerveDrive(shooterSideLimelight, ampSideLimelight);
     
     driver = new XboxController(0);
     driveWithJoystick = new DriveWithJoystick(swerve, driver, swerve.getFieldOriented(), swerve.getDriveWithTargeting());

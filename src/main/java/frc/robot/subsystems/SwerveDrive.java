@@ -63,11 +63,13 @@ public class SwerveDrive extends SubsystemBase {
   private boolean fieldOriented;
   private boolean driveWithTargeting;
 
-  private SwerveDrivePoseEstimator poseEstimator; 
+  private Limelight shooterSideLimelight;
+  private Limelight ampSideLimelight;
+
   public boolean slowMode;
 
   /** Creates a new SwerveDrive. */
-  public SwerveDrive() {
+  public SwerveDrive(Limelight shooterSideLimelight, Limelight ampSideLimelight) {
 
     frontLeft = new SwerveModule(
       DriveConstants.FRONT_LEFT[0],
@@ -132,6 +134,7 @@ public class SwerveDrive extends SubsystemBase {
     }).start();
     
     configureAutoBuilder();
+
   }
 
   private SwerveModulePosition getModulePosition(String module){
@@ -153,8 +156,6 @@ public class SwerveDrive extends SubsystemBase {
       position = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getRotatePosition()));
       return position;
     }
-
-    poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.KINEMATICS, getRotation2d(), positions, new Pose2d());
 
     return null;
   }
@@ -324,14 +325,12 @@ public class SwerveDrive extends SubsystemBase {
   public void periodic() {
     //Odometry update
     swerveOdometry.update(getRotation2d(), positions);
-
-    //Pose estimator update
-    poseEstimator.update(getRotation2d(), positions);
-    
-    swerveOdometry.update(getRotation2d(), getModulePositions());
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putString("Pose", getPose().toString());
+
+    //Puts a ready to shoot indicator on the dashboard
+    SmartDashboard.putBoolean("Can Shoot", shooterSideLimelight.readyToShoot());
   }
 }
