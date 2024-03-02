@@ -46,6 +46,12 @@ public class DriveWithJoystick extends Command {
     this.joy = joy;
     this.fieldOriented = fieldOriented;
     this.driveWithTargeting = driveWithTargeting;
+  
+
+    this.swerve = swerve;
+    this.joy = joy;
+
+    fieldOriented = swerve.getFieldOriented();
 
     xLimiter = new SlewRateLimiter(3);
     yLimiter = new SlewRateLimiter(3);
@@ -65,34 +71,33 @@ public class DriveWithJoystick extends Command {
     double xSpeed = joy.getLeftY();
     double ySpeed = joy.getLeftX();
     double rotateSpeed = joy.getRawAxis(4);
+    double maxDriveSpeed = swerve.getSlowMode() ? DriveConstants.SLOWER_DRIVE_SPEED : DriveConstants.MAX_DRIVE_SPEED;
+
+    fieldOriented = swerve.getFieldOriented();
 
     xSpeed = MathUtil.applyDeadband(xSpeed, 0.15);
     ySpeed = MathUtil.applyDeadband(ySpeed, 0.15);
     rotateSpeed = MathUtil.applyDeadband(rotateSpeed, 0.15);
 
-    xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.MAX_DRIVE_SPEED;
-    ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.MAX_DRIVE_SPEED;
+    xSpeed = xLimiter.calculate(xSpeed) * maxDriveSpeed;
+    ySpeed = yLimiter.calculate(ySpeed) * maxDriveSpeed;
     rotateSpeed = rotateLimiter.calculate(rotateSpeed) * DriveConstants.MAX_ROTATE_SPEED;
 
     if(fieldOriented) {
-        if (driveWithTargeting){
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, new Rotation2d(swerve.getHeadingWithOffset()));
-          } else {
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, swerve.getGyro().getRotation2d());
-          }
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, swerve.getRotation2d());
     } else {
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rotateSpeed);
     }
 
     moduleStates = DriveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-    swerve.setModuleStates(moduleStates);
+    swerve.setModuleStates(moduleStates, maxDriveSpeed);
 
     SmartDashboard.putNumber("Chassis x-speed", chassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Chassis y-speed", chassisSpeeds.vyMetersPerSecond);
     SmartDashboard.putNumber("Chassis rotate-speed", chassisSpeeds.omegaRadiansPerSecond);
-    // SmartDashboard.putNumber("Joystick X", joy.getRightX());
-    // SmartDashboard.putNumber("Joystick Y", joy.getLeftY());
-    // SmartDashboard.putNumber("Joystick Z", joy.getRawAxis(4));
+    SmartDashboard.putNumber("Gyro", swerve.getGyro().getRotation2d().getRadians());
+    SmartDashboard.putBoolean("Slow Mode", swerve.getSlowMode());
+    SmartDashboard.putNumber("Current Max Speed", maxDriveSpeed);
   }
 
   // Called once the command ends or is interrupted.
