@@ -226,6 +226,17 @@ public class SwerveDrive extends SubsystemBase {
     });
   }
 
+  public Command lockWheels(){
+    return run(() -> {
+                        SwerveModuleState[] lockedStates = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
+                        lockedStates[0] = new SwerveModuleState(.1, Rotation2d.fromDegrees(45));
+                        lockedStates[1] = new SwerveModuleState(.1, Rotation2d.fromDegrees(315));
+                        lockedStates[2] = new SwerveModuleState(.1, Rotation2d.fromDegrees(315));
+                        lockedStates[3] = new SwerveModuleState(.1, Rotation2d.fromDegrees(45));
+                        setModuleStates(lockedStates, .1);
+    });
+  }
+
   public void stopModules() {
     frontLeft.stop();
     frontRight.stop();
