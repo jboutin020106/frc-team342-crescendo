@@ -10,17 +10,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Outtake;
+import frc.robot.subsystems.SwerveDrive;
 
 public class Load extends Command {
   /** Creates a new Load. */
   public Intake intake; 
   public Outtake outtake;
+  public SwerveDrive swerve;
 
-  public Load(Outtake outtake, Intake intake) {
+  public Load(Outtake outtake, Intake intake, SwerveDrive swerve) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.outtake = outtake;
-    addRequirements(intake, outtake);
+    this.swerve = swerve;
+
+    addRequirements(intake, outtake, swerve);
   }
 
   // Called when the command is initially scheduled.
@@ -30,6 +34,8 @@ public class Load extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    swerve.lockWheels();
+
     outtake.shootVelocity(DESIRED_SPEED);
      
     if(outtake.isUpToSpeed(DESIRED_SPEED)){
@@ -42,6 +48,7 @@ public class Load extends Command {
   public void end(boolean interrupted) {
     outtake.stop();
     intake.stop();
+    swerve.goToZero();
   }
 
   // Returns true when the command should end.
