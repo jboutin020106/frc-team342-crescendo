@@ -22,6 +22,7 @@ public class Limelight extends SubsystemBase {
 
     public double calculateHorizontalDistanceToSpeaker(String limelightName){
 
+    if(LimelightHelpers.getTV(limelightName) && LimelightHelpers.getFiducialID(limelightName) == 8){
         if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
         double horizontalDistanceToSpeaker = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSpeaker;
@@ -32,16 +33,15 @@ public class Limelight extends SubsystemBase {
         Math.tan(LimelightHelpers.getTY(limelightName));
         return horizontalDistanceToSpeaker;
         } 
-        
-        else {
+    }
             double horizontalDistanceToSpeaker = 0;
             return horizontalDistanceToSpeaker;
-        }
 
 
     }
 
     public double calculateHorizontalDistanceToAmp(String limelightName){
+        if(LimelightHelpers.getTV(limelightName) && LimelightHelpers.getFiducialID(limelightName) == 6){
 
         if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
             double horizontalDistanceToAmp = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_AMP 
@@ -54,41 +54,38 @@ public class Limelight extends SubsystemBase {
             / Math.tan(LimelightHelpers.getTY(limelightName));
             return horizontalDistanceToAmp;
         }
+    }
 
-        else{
             double horizontalDistanceToAmp = 0;
             return horizontalDistanceToAmp;
-        }
-
-
 
     }
 
     public double calculateHorizontalDistanceToSource(String limelightName){
+    if(LimelightHelpers.getTV(limelightName) && (LimelightHelpers.getFiducialID(limelightName) == 1
+       || LimelightHelpers.getFiducialID(limelightName) == 2)){
+            if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
+                double horizontalDistanceToSource = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE
+                / Math.tan(LimelightHelpers.getTY(limelightName));
+                return horizontalDistanceToSource;
+            }
 
-         if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
-            double horizontalDistanceToSource = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE
-            / Math.tan(LimelightHelpers.getTY(limelightName));
-            return horizontalDistanceToSource;
+            else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
+                double horizontalDistanceToSource = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
+                / Math.tan(LimelightHelpers.getTY(limelightName));
+                return horizontalDistanceToSource;
+            }
         }
-
-        else if(limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-            double horizontalDistanceToSource = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP
-            / Math.tan(LimelightHelpers.getTY(limelightName));
-            return horizontalDistanceToSource;
-        }
-
-        else{
             double horizontalDistanceToSource = 0;
             return horizontalDistanceToSource;
         }
-    }
+
 
     public boolean readyToShoot(){
         boolean readyToShoot = false;
 
         if(LimelightHelpers.getTV(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-            if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == 8){
+            if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == 8 ){
                 if(LimelightConstants.MINIMUM_DISTANCE_FROM_SPEAKER <= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)
                     && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
                 
