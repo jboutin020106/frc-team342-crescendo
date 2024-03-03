@@ -150,8 +150,8 @@ public static class IntakeConstants {
     public static final double SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET = 0;
 
     //Ready-to-Shoot offset constants
-    public static final double MINIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(18);
-    public static final double MAXIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(36);
+    public static final double MINIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(20);
+    public static final double MAXIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(45);
     public static final double MINIMUM_DISTANCE_FROM_SPEAKER = Units.inchesToMeters(37.7) + MINIMUM_DISTANCE_FROM_SUBWOOFER; //Adds distance from subwoofer to apriltag 8 and minimum distance from subwoofer
     public static final double MAXIMUM_DISTANCE_FROM_SPEAKER = Units.inchesToMeters(37.7) + MAXIMUM_DISTANCE_FROM_SUBWOOFER; //Adds distance from subwoofer to apriltag 8 and maximum distance from subwoofer
     public static final double MINIMUM_ANGLE_OFFSET_FROM_SPEAKER = -27;
