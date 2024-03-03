@@ -158,8 +158,8 @@ public static class IntakeConstants {
     public static final double MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER = 27;
     
     //Limelight name constants
-    public static final String AMP_SIDE_LIMELIGHT_NAME = "Amp Side Limelight";
-    public static final String SHOOTER_SIDE_LIMELIGHT_NAME = "Shooter Side Limelight";
+    public static final String AMP_SIDE_LIMELIGHT_NAME = "limelight-amp";
+    public static final String SHOOTER_SIDE_LIMELIGHT_NAME = "limelight-shooter";
   }
 
   public static class AutoAlignConstants{
