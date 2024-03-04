@@ -332,5 +332,8 @@ public class SwerveDrive extends SubsystemBase {
 
     //Puts a ready to shoot indicator on the dashboard
     SmartDashboard.putBoolean("Can Shoot", shooterSideLimelight.readyToShoot());
+
+    SmartDashboard.putNumber("Distance from Subwoofer", shooterSideLimelight.calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
+    SmartDashboard.putNumber("Angle from Subwoofer Center", LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
   }
 }
