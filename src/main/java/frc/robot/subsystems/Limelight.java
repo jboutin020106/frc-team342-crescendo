@@ -98,6 +98,10 @@ public class Limelight extends SubsystemBase {
         }
         return readyToShoot;
     }
+
+    public boolean readyToRumble(){
+        return readyToShoot();
+    }
 } 
 
 
