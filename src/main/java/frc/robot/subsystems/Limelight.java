@@ -22,19 +22,20 @@ public class Limelight extends SubsystemBase {
 
     public double calculateHorizontalDistanceToSpeaker(String limelightName){
 
-    if(LimelightHelpers.getTV(limelightName) && LimelightHelpers.getFiducialID(limelightName) == 8){
-        if(limelightName.equals(LimelightConstants.AMP_SIDE_LIMELIGHT_NAME)){
-        double horizontalDistanceToSpeaker = LimelightConstants.AMP_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / Math.tan(LimelightHelpers.getTY(limelightName));
-        return horizontalDistanceToSpeaker;
-        } 
+        double limelightAngleDegrees = 28;
 
-        else if (limelightName.equals(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)) {
-        double horizontalDistanceToSpeaker = LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER / 
-        Math.tan(LimelightHelpers.getTY(limelightName));
+
+    if(LimelightHelpers.getTV(limelightName) && (LimelightHelpers.getFiducialID(limelightName) == 8) || LimelightHelpers.getFiducialID(limelightName) == 4){
+
+        double angleToTargetDegrees = limelightAngleDegrees + LimelightHelpers.getTY(limelightName);
+        double angleToGoalRadians = angleToTargetDegrees * (3.14159 / 180.0);
+
+        double horizontalDistanceToSpeaker = (LimelightConstants.SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER) / Math.tan(angleToGoalRadians);
         return horizontalDistanceToSpeaker;
-        } 
+        
+
     }
-            double horizontalDistanceToSpeaker = 0;
+            double horizontalDistanceToSpeaker = -1;
             return horizontalDistanceToSpeaker;
 
 
@@ -88,16 +89,12 @@ public class Limelight extends SubsystemBase {
             if(LimelightHelpers.getFiducialID(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) == 8 ){
                 if(LimelightConstants.MINIMUM_DISTANCE_FROM_SPEAKER <= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)
                     && LimelightConstants.MAXIMUM_DISTANCE_FROM_SPEAKER >= calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
-                
-                        if(LimelightConstants.MINIMUM_ANGLE_OFFSET_FROM_SPEAKER <= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME) 
-                    && LimelightConstants.MAXIMUM_ANGLE_OFFSET_FROM_SPEAKER >= LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME)){
                         readyToShoot = true;
                    }
                 }
             }
-        }
-        return readyToShoot;
-    }
+            return readyToShoot;
+        };
 
     public boolean readyToRumble(){
         return readyToShoot();

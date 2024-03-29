@@ -17,7 +17,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.OuttakeConstants;
+import static frc.robot.Constants.OuttakeConstants;
+
 
 public class Outtake extends SubsystemBase {
   
@@ -32,20 +33,18 @@ public class Outtake extends SubsystemBase {
   /** Creates a new Shooter. */
   public Outtake() {
 
+
     leftMotor = new CANSparkMax(OuttakeConstants.MOTOR_ONE_ID, MotorType.kBrushless);
     rightMotor = new CANSparkMax(OuttakeConstants.MOTOR_TWO_ID, MotorType.kBrushless);
 
-    leftMotor.setSmartCurrentLimit(30);
-    rightMotor.setSmartCurrentLimit(30);
+    leftMotor.setSmartCurrentLimit(OuttakeConstants.CURRENT_LIMIT);
+    rightMotor.setSmartCurrentLimit(OuttakeConstants.CURRENT_LIMIT);
 
     leftMotor.setInverted(true);
     rightMotor.follow(leftMotor, true);
 
     leftMotor.setIdleMode(IdleMode.kCoast);
     rightMotor.setIdleMode(IdleMode.kCoast);
-
-    leftMotor.setSmartCurrentLimit(OuttakeConstants.CURRENT_LIMIT);
-    rightMotor.setSmartCurrentLimit(OuttakeConstants.CURRENT_LIMIT);
 
     encoder = leftMotor.getEncoder();    
     pidController = leftMotor.getPIDController();
@@ -55,16 +54,11 @@ public class Outtake extends SubsystemBase {
     pidController.setFF(OuttakeConstants.FF_VALUE);
     pidController.setSmartMotionAllowedClosedLoopError(100, 0);
     pidController.setOutputRange(0, 5000);
-
-    SmartDashboard.putNumber("setP", OuttakeConstants.P_VALUE);
-    SmartDashboard.putNumber("setI", OuttakeConstants.I_VALUE);
-    SmartDashboard.putNumber("setD", OuttakeConstants.D_VALUE);
-    SmartDashboard.putNumber("setFF", OuttakeConstants.FF_VALUE);
   }
 
   public void shootPercent(double speed){
     leftMotor.set(speed);
-    System.out.println("Shooting at " + speed);
+    // System.out.println("Shooting at " + speed);
   }
 
   public void stop(){
@@ -92,5 +86,6 @@ public class Outtake extends SubsystemBase {
     pidController.setI(i);
     pidController.setD(d);
     pidController.setFF(ff);
+    // SmartDashboard.putNumber("Shooter RPM", encoder.getVelocity());
   }
 }

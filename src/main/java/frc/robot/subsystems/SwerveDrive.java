@@ -34,7 +34,13 @@ import frc.robot.SwerveModule;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
 
+import static frc.robot.Constants.DriveConstants.*;
+
 public class SwerveDrive extends SubsystemBase {
+
+  private double BR_P;
+  private double BR_I;
+  private double BR_D;
 
   private SwerveModule frontLeft;
   private SwerveModule frontRight;
@@ -64,12 +70,13 @@ public class SwerveDrive extends SubsystemBase {
   private boolean driveWithTargeting;
 
   private Limelight shooterSideLimelight;
-  private Limelight ampSideLimelight;
 
   public boolean slowMode;
 
   /** Creates a new SwerveDrive. */
-  public SwerveDrive(Limelight shooterSideLimelight, Limelight ampSideLimelight) {
+  public SwerveDrive(Limelight shooterSideLimelight) {
+
+    this.shooterSideLimelight = shooterSideLimelight;
 
     frontLeft = new SwerveModule(
       DriveConstants.FRONT_LEFT[0],
@@ -85,13 +92,13 @@ public class SwerveDrive extends SubsystemBase {
       DriveConstants.FR_ENCODER_PORT,
       false, true,
       DriveConstants.FRONT_RIGHT_OFFSET,
-      DriveConstants.PID_VALUES);
+      DriveConstants.FR_PID_VALUES);
    
     backLeft = new SwerveModule(
       DriveConstants.BACK_LEFT[0],
       DriveConstants.BACK_LEFT[1],
       DriveConstants.BL_ENCODER_PORT,
-      false, true,
+      false, false,
       DriveConstants.BACK_LEFT_OFFSET,
       DriveConstants.PID_VALUES);  
       
@@ -99,9 +106,9 @@ public class SwerveDrive extends SubsystemBase {
       DriveConstants.BACK_RIGHT[0],
       DriveConstants.BACK_RIGHT[1],
       DriveConstants.BR_ENCODER_PORT,
-      false, false,
+      false, true,
       DriveConstants.BACK_RIGHT_OFFSET,
-      DriveConstants.BL_PID_VALUES);
+      DriveConstants.PID_VALUES);
 
     gyro = new AHRS(SerialPort.Port.kUSB);
 
@@ -112,16 +119,16 @@ public class SwerveDrive extends SubsystemBase {
       backRight.getState()
     };
 
-    swerveOdometry = new SwerveDriveOdometry(DriveConstants.KINEMATICS, new Rotation2d(gyro.getAngle()), getModulePositions());
+    swerveOdometry = new SwerveDriveOdometry(KINEMATICS, new Rotation2d(gyro.getAngle()), getModulePositions());
     chassisSpeeds = new ChassisSpeeds();
 
     poseSupplier = () -> getPose();
     resetPoseConsumer = pose -> resetOdometry(pose);
-    robotRelativeOutput = inputSpeed -> drive(inputSpeed, DriveConstants.SLOWER_DRIVE_SPEED);
+    robotRelativeOutput = inputSpeed -> drive(inputSpeed, SLOWER_DRIVE_SPEED);
     chassisSpeedSupplier = () -> getChassisSpeeds();
     shouldFlipSupplier = () -> false;
 
-    fieldOriented = false;
+    fieldOriented = true;
     slowMode = false;
 
     field = new Field2d();
@@ -222,7 +229,7 @@ public class SwerveDrive extends SubsystemBase {
   public Command goToZero() {
     return run(() -> {
       SwerveModuleState[] zeroStates = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
-      setModuleStates(zeroStates, DriveConstants.MAX_DRIVE_SPEED);
+      setModuleStates(zeroStates, MAX_DRIVE_SPEED);
     });
   }
 
@@ -264,25 +271,24 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void drive(double xInput, double yInput, double rotateInput) {
-    double xSpeed = xLimiter.calculate(xInput) * DriveConstants.MAX_DRIVE_SPEED;
-    double ySpeed = yLimiter.calculate(yInput) * DriveConstants.MAX_DRIVE_SPEED;
-    double rotateSpeed = rotateLimiter.calculate(rotateInput) * DriveConstants.MAX_ROTATE_SPEED;
+    double xSpeed = xLimiter.calculate(xInput) * MAX_DRIVE_SPEED;
+    double ySpeed = yLimiter.calculate(yInput) * MAX_DRIVE_SPEED;
+    double rotateSpeed = rotateLimiter.calculate(rotateInput) * MAX_ROTATE_SPEED;
 
     if(fieldOriented) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotateSpeed, getGyro().getRotation2d());
     } else {
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rotateSpeed);
       }
-    SwerveModuleState moduleStates[] = DriveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-    setModuleStates(moduleStates, DriveConstants.MAX_DRIVE_SPEED);
+    SwerveModuleState moduleStates[] = KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    setModuleStates(moduleStates, MAX_DRIVE_SPEED);
   }
     
   public void drive(ChassisSpeeds speeds, double maxDriveSpeed) {
     chassisSpeeds = new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
-    System.out.println(chassisSpeeds + "[\n]" + this.getChassisSpeeds());
     chassisSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
     
-    SwerveModuleState moduleStates[] = DriveConstants.KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState moduleStates[] = KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setModuleStates(moduleStates, maxDriveSpeed);
   }
 
@@ -292,6 +298,20 @@ public class SwerveDrive extends SubsystemBase {
       return alliance.get() == DriverStation.Alliance.Red;
     }
     return false;
+  }
+
+  public void setBrakeMode() {
+    frontLeft.setBrakeMode();
+    frontRight.setBrakeMode();
+    backLeft.setBrakeMode();
+    backRight.setBrakeMode();
+  }
+
+  public void setCoastMode() {
+    frontLeft.setCoastMode();
+    frontRight.setCoastMode();
+    backLeft.setCoastMode();
+    backRight.setCoastMode();
   }
 
   public double get5V() {
@@ -304,36 +324,33 @@ public class SwerveDrive extends SubsystemBase {
       resetPoseConsumer,
       chassisSpeedSupplier,
       robotRelativeOutput,
-      DriveConstants.PATH_CONFIG,
+      PATH_CONFIG,
       shouldFlipSupplier,
       this
       );
-    System.out.println("Auto builder configured");
-
-    PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
-    SmartDashboard.putData("Field", field);
   }
 
 
   @Override
   public void initSendable(SendableBuilder sendableBuilder) {
-    sendableBuilder.setSmartDashboardType("Encoder Values");
-    sendableBuilder.addDoubleProperty("5 Volt", () -> get5V(), null);
-  }
+    sendableBuilder.setSmartDashboardType("Swerve drive");
+    sendableBuilder.addBooleanProperty("Field Oriented", () -> fieldOriented, null);
+    sendableBuilder.addBooleanProperty("Slow mode", () -> getSlowMode(), null);
+    // sendableBuilder.addDoubleProperty("Back Right", ()-> backRight.getOffsets(), null);
+   }  
 
   @Override
   public void periodic() {
-    //Odometry update
-    swerveOdometry.update(getRotation2d(), positions);
+    swerveOdometry.update(getRotation2d(), getModulePositions());
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putString("Pose", getPose().toString());
+    
 
-    //Puts a ready to shoot indicator on the dashboard
-    SmartDashboard.putBoolean("Can Shoot", shooterSideLimelight.readyToShoot());
-
-    SmartDashboard.putNumber("Distance from Subwoofer", shooterSideLimelight.calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
-    SmartDashboard.putNumber("Angle from Subwoofer Center", LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
+    SmartDashboard.putNumber("Vertical offset angle", -LimelightHelpers.getTY(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
+    SmartDashboard.putNumber("Horizontal Distance to Speaker", shooterSideLimelight.calculateHorizontalDistanceToSpeaker(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME));
+    SmartDashboard.putBoolean("Ready to shoot?", shooterSideLimelight.readyToShoot());
+    SmartDashboard.putNumber("TV", LimelightHelpers.getLimelightNTDouble(LimelightConstants.SHOOTER_SIDE_LIMELIGHT_NAME, "tv"));;
   }
 }

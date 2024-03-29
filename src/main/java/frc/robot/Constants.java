@@ -81,7 +81,7 @@ public static class IntakeConstants {
     );
 
     public static final double[] PID_VALUES = {0.5, 0, 0};
-    public static final double[] BL_PID_VALUES = {0.5, 0.01, 0};
+    public static final double[] FR_PID_VALUES = {0.2, 0, 0};
 
     // Drive Motor IDs
     //switch back to 1,2,3,4 - temporarily 9,10,11,12 *
@@ -135,7 +135,7 @@ public static class IntakeConstants {
     public static final double AMP_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
 
     //Shooter Side Limelight height constants
-    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = 0;
+    public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SPEAKER = Units.inchesToMeters(38.225);
     public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_AMP = 0;
     public static final double SHOOTER_SIDE_LIMELIGHT_HEIGHT_TO_SOURCE = 0;
 
@@ -150,8 +150,8 @@ public static class IntakeConstants {
     public static final double SHOOTER_SIDE_APRILTAG_ROTATE_OFFSET = 0;
 
     //Ready-to-Shoot offset constants
-    public static final double MINIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(20);
-    public static final double MAXIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(45);
+    public static final double MINIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(33.25);
+    public static final double MAXIMUM_DISTANCE_FROM_SUBWOOFER = Units.inchesToMeters(44);
     public static final double MINIMUM_DISTANCE_FROM_SPEAKER = Units.inchesToMeters(37.7) + MINIMUM_DISTANCE_FROM_SUBWOOFER; //Adds distance from subwoofer to apriltag 8 and minimum distance from subwoofer
     public static final double MAXIMUM_DISTANCE_FROM_SPEAKER = Units.inchesToMeters(37.7) + MAXIMUM_DISTANCE_FROM_SUBWOOFER; //Adds distance from subwoofer to apriltag 8 and maximum distance from subwoofer
     public static final double MINIMUM_ANGLE_OFFSET_FROM_SPEAKER = -27;
