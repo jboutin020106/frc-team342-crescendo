@@ -6,11 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Outtake;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Wrist;
 
 public class MoveWristPercent extends Command {
@@ -38,7 +35,7 @@ private Wrist wrist;
     double currPosition = wrist.getthroughBore().getAbsolutePosition();
 
     double speed = MathUtil.applyDeadband(joy.getLeftY(), 0.15);
-    if(currPosition > 30 && currPosition < 90){
+    if(currPosition > IntakeConstants.HIGH_WRIST_POS && currPosition < IntakeConstants.LOW_WRIST_POS){
       wrist.rotateWrist(speed);
     }
   }

@@ -46,24 +46,27 @@ public class Climb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rightJoy = -joyStick.getRightY();
+    double rightJoy = joyStick.getRightY();
     double speed = MathUtil.applyDeadband(rightJoy, 0.15);
 
     if (elevator.getClimbMode()){
       double curr = elevator.getElevatorEncoder();
 
-      if(/*curr > initialPosition - IntakeConstants.MAX_DISTANCE &&*/ speed < 0){ // Go up if the current pos is less than max height and joy is up
-        elevator.raiseElevatorwithSpeed(speed * maxInput);
+
+      //if(curr > initialPosition - IntakeConstants.MAX_DISTANCE && speed < 0){ // Go up if the current pos is less than max height and joy is up
+        //elevator.raiseElevatorwithSpeed(speed * maxInput);
         // System.out.println("Going up");
-      }
-      else if(/*curr > initialPosition &&*/ speed > 0 /*&& !magneticLimit.get()*/) { // Go down if current pos is greater than initial position (minimum height) and joy is down
+      //}
+      //else if(curr < initialPosition && speed > 0 && magneticLimit.get()) { // Go down if current pos is greater than initial position (minimum height) and joy is down
         elevator.raiseElevatorwithSpeed(speed * maxInput);
         // System.out.println("Going down");
-      }
-      else {
-        elevator.holdPosition();
-      }
+      //}
+      //else {
+        //elevator.holdPosition();
+      //}
     }
+
+    SmartDashboard.putNumber("Climb Position", elevator.getElevatorEncoder());
     
     // SmartDashboard.putNumber("Init pos", initialPosition);
     // SmartDashboard.putNumber("Position", elevator.getElevatorEncoder());

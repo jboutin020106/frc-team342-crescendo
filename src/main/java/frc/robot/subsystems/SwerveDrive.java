@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.kauailabs.navx.frc.AHRS;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -33,14 +35,11 @@ import frc.robot.LimelightHelpers;
 import frc.robot.SwerveModule;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.commands.RotateToAngle;
 
 import static frc.robot.Constants.DriveConstants.*;
 
 public class SwerveDrive extends SubsystemBase {
-
-  private double BR_P;
-  private double BR_I;
-  private double BR_D;
 
   private SwerveModule frontLeft;
   private SwerveModule frontRight;
@@ -84,7 +83,7 @@ public class SwerveDrive extends SubsystemBase {
       DriveConstants.FL_ENCODER_PORT,
       false, false,
       DriveConstants.FRONT_LEFT_OFFSET,
-      DriveConstants.PID_VALUES);
+      DriveConstants.FL_PID_VALUES);
 
     frontRight = new SwerveModule(
       DriveConstants.FRONT_RIGHT[0], 
@@ -98,17 +97,17 @@ public class SwerveDrive extends SubsystemBase {
       DriveConstants.BACK_LEFT[0],
       DriveConstants.BACK_LEFT[1],
       DriveConstants.BL_ENCODER_PORT,
-      false, false,
+      false, true,
       DriveConstants.BACK_LEFT_OFFSET,
-      DriveConstants.PID_VALUES);  
+      DriveConstants.BL_PID_VALUES);  
       
     backRight = new SwerveModule(
       DriveConstants.BACK_RIGHT[0],
       DriveConstants.BACK_RIGHT[1],
       DriveConstants.BR_ENCODER_PORT,
-      false, true,
+      false, false,
       DriveConstants.BACK_RIGHT_OFFSET,
-      DriveConstants.PID_VALUES);
+      DriveConstants.BR_PID_VALUES);
 
     gyro = new AHRS(SerialPort.Port.kUSB);
 
@@ -231,6 +230,13 @@ public class SwerveDrive extends SubsystemBase {
       SwerveModuleState[] zeroStates = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
       setModuleStates(zeroStates, MAX_DRIVE_SPEED);
     });
+  }
+
+  public Command rotateToAmp() {
+    boolean redAlliance = shouldFlip(); // Depending on the starting alliance side, the amp would be at different angle. Account for that.
+    RotateToAngle rotate = redAlliance ? new RotateToAngle(90, this) : new RotateToAngle(-90, this); // If red, go to 90. If blue, go to -90.
+
+    return rotate;
   }
 
   public void stopModules() {
